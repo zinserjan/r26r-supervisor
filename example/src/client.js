@@ -12,7 +12,7 @@ import * as reducers from './reducers';
 const initialData = window.__data;
 
 const history = useRouterHistory(createBrowserHistory)({
-  basename: '',
+  //basename: '/test',
 });
 
 const store = createStore({

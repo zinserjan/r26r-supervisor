@@ -28,8 +28,8 @@ const getHtml = (html = '', data = {}) => { // eslint-disable-line arrow-body-st
 router.use((req, res) => {
   const url = req.url;
 
-  const history = useRouterHistory(createMemoryHistory)({
-    basename: '',
+  const history = createMemoryHistory({
+    //basename: '',
   });
 
   const store = createStore({
