@@ -30,6 +30,7 @@ router.use((req, res) => {
 
   const history = createMemoryHistory({
     //basename: '',
+    entries: url
   });
 
   const store = createStore({

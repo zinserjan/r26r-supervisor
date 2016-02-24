@@ -13,9 +13,9 @@ export default function ({ renderProps, store, getLocals }, cb) {
     .then(() => getDataDependencies(PREFETCH, components, getAllLocals))
     .then(() => getDataDependencies(FETCH, components, getAllLocals))
     .then(() => {
-      cb(null, null, getState());
+      cb(null, getState());
     })
     .catch((error) => {
-      cb(error, null, null);
+      cb(error, null);
     });
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
 import loadServerState from './fetch/loadServerState';
-//
+import { parsePath } from 'history/lib/PathUtils';
 
 export default function server({ store, routes, history, url, getLocals }, cb) {
   match({ routes, history, location: url }, (error, redirectLocation, renderProps) => {
@@ -17,19 +17,25 @@ export default function server({ store, routes, history, url, getLocals }, cb) {
       store._unsubscribe(); // stop the syncing process of store with history
     } else {
       // success
-      loadServerState({ renderProps, store, getLocals }, (error, redirectLocation, initialState) => { // eslint-disable-line no-shadow, max-len
+      loadServerState({ renderProps, store, getLocals }, (error, initialState) => { // eslint-disable-line no-shadow, max-len
         store._unsubscribe(); // stop the syncing process of store with history
         if (error) {
           cb(error, null, null, null); // error
-        } else if (redirectLocation) {
-          cb(null, redirectLocation, null, null); // redirect
         } else {
-          const component = (
-            <Provider store={store}>
-              <RouterContext {...renderProps} />
-            </Provider>
-          );
-          cb(null, null, component, initialState);
+          // Pick up current location from the history via synchronous history.listen
+          history.listen((newLocation) => {
+            const oldLocation = parsePath(url);
+            if (oldLocation.pathname !== newLocation.pathname || oldLocation.search !== newLocation.search) {
+              cb(null, newLocation, null, null); // location change while fetching -> redirect to new location
+            } else {
+              const component = (
+                <Provider store={store}>
+                  <RouterContext {...renderProps} />
+                </Provider>
+              );
+              cb(null, null, component, initialState);
+            }
+          })();
         }
       });
     }
