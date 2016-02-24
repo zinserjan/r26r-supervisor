@@ -44,17 +44,16 @@ app.get('*', function(req, res, next) {
 // Do "hot-reloading" of express stuff and react stuff on the server
 // Throw away cached modules and re-require next time
 // Ensure there's no important state in there!
-var pathSrc = path.join(__dirname, 'src');
-var pathLibDist = path.join(__dirname, '..', 'lib');
+var pathSrc = path.resolve(path.join(__dirname, 'src'));
+var pathLibDist = path.resolve(path.join(__dirname, '..', 'lib'));
 
-var watcher = chokidar.watch(['./src', '../lib']);
+var watcher = chokidar.watch([pathSrc, pathLibDist]);
 
 watcher.on('ready', function() {
-  watcher.on('all', function() {
-    console.log('Clearing module cache');
+  watcher.on('all', function(event, path) {
     Object.keys(require.cache).forEach(function(id) {
       if (pathExtras.contains(pathSrc, id) || pathExtras.contains(pathLibDist, id)) {
-        console.log('Clearing module cache for file ' + id);
+        //console.log('Clearing module cache for file ' + id);
         delete require.cache[id];
       }
     });
