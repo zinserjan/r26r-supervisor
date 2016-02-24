@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore }from 'r26r-supervisor';
 import renderClient from 'r26r-supervisor/lib/client';
+import configure from 'r26r-supervisor/lib/configure';
 import { useRouterHistory } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 
@@ -11,13 +11,11 @@ import * as reducers from './reducers';
 
 const initialState = window.__data;
 
-const history = useRouterHistory(createBrowserHistory)({
-  //basename: '/test',
-});
-
-const store = createStore({
+const {store, history} = configure({
   reducers,
-  history,
+  history: useRouterHistory(createBrowserHistory)({
+    //basename: '/test',
+  }),
   initialState,
   enhancers: [DevTools.instrument()],
 });

@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import { prefetch, fetch, defer } from 'r26r-supervisor';
-
-import { push, replace, go, goBack, goForward } from 'react-router-redux';
+import { prefetch, fetch, defer, replaceAction } from 'r26r-supervisor';
 
 
 let prefetchCalled = 0;
@@ -11,7 +9,7 @@ let fetchCalled = 0;
 @prefetch(function prefetchData({ dispatch, getState, location }){
 
   //if (location.pathname !== '/counter'){
-  //  dispatch(replace('/counter'));
+  //  dispatch(replaceAction('/counter'));
   //}
   console.log(++prefetchCalled);
   return Promise.resolve();

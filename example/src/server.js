@@ -1,6 +1,6 @@
 import express from 'express';
 import { renderToString } from 'react-dom/server';
-import { createStore }from 'r26r-supervisor';
+import configure from 'r26r-supervisor/lib/configure';
 import renderServer from 'r26r-supervisor/lib/server';
 import { createMemoryHistory } from 'react-router';
 
@@ -28,14 +28,12 @@ const getHtml = (html = '', data = {}) => { // eslint-disable-line arrow-body-st
 router.use((req, res) => {
   const url = req.url;
 
-  const history = createMemoryHistory({
-    //basename: '',
-    entries: url
-  });
-
-  const store = createStore({
+  const {store, history} = configure({
     reducers,
-    history,
+    history: createMemoryHistory({
+      //basename: '',
+      entries: url
+    })
   });
 
   const routes = createRoutes(store);
