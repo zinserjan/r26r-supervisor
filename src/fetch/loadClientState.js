@@ -1,5 +1,5 @@
 import { match } from 'react-router';
-import { PREFETCH, FETCH } from './type';
+import { PREFETCH, FETCH, DEFER } from './type';
 import createGetLocals from './getLocals';
 import getDataDependencies from './getDataDependencies';
 import isEmpty from 'lodash/isEmpty';
@@ -48,6 +48,11 @@ export default function ({ history, routes, store, getLocals, initialState = {} 
               getDataDependencies(FETCH, components, getAllLocals)
                 .catch(log);
             }
+
+            // call defer but doesn't wait for it
+            getDataDependencies(DEFER, components, getAllLocals)
+              .catch(log);
+
             return Promise.resolve();
           })
           .then(continueTransition, continueTransition)

@@ -18,7 +18,8 @@ let fetchCalled = 0;
   console.log(++fetchCalled);
   return Promise.resolve();
 })
-@defer(function fetchData({ dispatch, getState }){
+@defer(function defer({ dispatch, getState }){
+  console.log("defer client only!!")
   return Promise.resolve();
 })
 export default class App extends Component {
