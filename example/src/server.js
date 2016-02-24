@@ -2,7 +2,7 @@ import express from 'express';
 import { renderToString } from 'react-dom/server';
 import { createStore }from 'r26r-supervisor';
 import renderServer from 'r26r-supervisor/lib/server';
-import { useRouterHistory, createMemoryHistory } from 'react-router';
+import { createMemoryHistory } from 'react-router';
 
 import createRoutes from './routes/createRoutes';
 import * as reducers from './reducers';
