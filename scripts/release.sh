@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/bin/bash
+set -e
 export RELEASE=1
 
 if ! [ -e scripts/release.sh ]; then
@@ -27,7 +28,8 @@ validate_semver $next_version
 
 next_ref="v$next_version"
 
-node scripts/build.js
+npm run lint
+npm run build
 
 update_version 'package.json' $next_version
 
