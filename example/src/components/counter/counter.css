@@ -1,0 +1,16 @@
+.button {
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.increment {
+  composes: button;
+  border: 1px solid green;
+  background-color: green;
+}
+
+.decrement {
+  border: 1px solid red;
+  background-color: red;
+}
