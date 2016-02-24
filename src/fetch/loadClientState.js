@@ -5,6 +5,12 @@ import getDataDependencies from './getDataDependencies';
 
 const shouldFetch = (oldLocation, newLocation) => !oldLocation && newLocation || oldLocation.pathname !== newLocation.pathname || oldLocation.search !== newLocation.search; // eslint-disable-line max-len
 
+const log = (e) => {
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(e);
+  }
+};
+
 export default function ({ history, routes, store, getLocals }) {
   let oldLocation = null;
 
@@ -22,14 +28,13 @@ export default function ({ history, routes, store, getLocals }) {
         Promise
           .resolve()
           .then(() => getDataDependencies(PREFETCH, components, getAllLocals))
+          .then(() => {
+            // call fetch but doesn't wait for it
+            getDataDependencies(FETCH, components, getAllLocals)
+              .catch(log)
+          })
           .then(continueTransition, continueTransition)
-          .then(() => getDataDependencies(FETCH, components, getAllLocals))
-          .catch((e) => {
-            if (process.env.NODE_ENV !== 'production') {
-              console.error(e);
-            }
-            return;
-          });
+          .catch(log)
       } else {
         continueTransition();
       }
