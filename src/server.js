@@ -1,6 +1,4 @@
-import React from 'react';
-import { match, RouterContext } from 'react-router';
-import { Provider } from 'react-redux';
+import { match } from 'react-router';
 import loadServerState from './fetch/loadServerState';
 import { parsePath } from 'history/lib/PathUtils';
 
@@ -28,12 +26,7 @@ export default function server({ store, routes, history, url, getLocals }, cb) {
             if (oldLocation.pathname !== newLocation.pathname || oldLocation.search !== newLocation.search) { // eslint-disable-line max-len
               cb(null, newLocation, null, null); // location changed -> redirect to new location
             } else {
-              const component = (
-                <Provider store={store}>
-                  <RouterContext {...renderProps} />
-                </Provider>
-              );
-              cb(null, null, component, initialState);
+              cb(null, null, renderProps, initialState);
             }
           })();
         }

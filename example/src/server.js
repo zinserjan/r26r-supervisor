@@ -1,8 +1,11 @@
 import express from 'express';
-import { renderToString } from 'react-dom/server';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { RouterContext, createMemoryHistory } from 'react-router';
+import { Provider } from 'react-redux';
+
 import configure from 'r26r-supervisor/lib/configure';
 import renderServer from 'r26r-supervisor/lib/server';
-import { createMemoryHistory } from 'react-router';
 
 import createRoutes from './routes/createRoutes';
 import * as reducers from './reducers';
@@ -43,15 +46,20 @@ router.use((req, res) => {
     routes,
     history,
     url,
-  }, (error, redirectLocation, component, state) => {
+  }, (error, redirectLocation, renderProps, state) => {
     if (error) {
       res.status(500).send(error.stack);
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (!component) {
+    } else if (!renderProps) {
       res.status(404).send('Not found');
     } else {
-      const appHtml = renderToString(component);
+      const component = (
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>
+      );
+      const appHtml = ReactDOMServer.renderToString(component);
       const siteHtml = getHtml(appHtml, state);
       res.status(200).send(siteHtml);
     }

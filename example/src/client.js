@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router, useRouterHistory } from 'react-router';
+import { Provider } from 'react-redux';
+import createBrowserHistory from 'history/lib/createBrowserHistory';
+
 import renderClient from 'r26r-supervisor/lib/client';
 import configure from 'r26r-supervisor/lib/configure';
-import { useRouterHistory } from 'react-router';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
 
 import DevTools from './util/DevTools';
 import createRoutes from './routes/createRoutes';
@@ -22,13 +24,21 @@ const {store, history} = configure({
 
 const url = window.location.pathname + window.location.search + window.location.hash;
 
+const routes = createRoutes(store);
+
 renderClient({
   store,
   initialState,
-  routes: createRoutes(store),
+  routes,
   history,
   url
-}, (component) => {
+}, () => {
+  const component = (
+    <Provider store={store}>
+      <Router routes={routes} history={history} />
+    </Provider>
+  );
+
   ReactDOM.render(component, document.getElementById('app'));
   ReactDOM.render((<DevTools store={store}/>), document.getElementById('dev'));
 });

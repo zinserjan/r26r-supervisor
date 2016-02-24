@@ -44,9 +44,7 @@
   },
   "peerdependencies": {
     "react-router": "^2.0.0",
-    "react-redux": "^4.4.0",
     "redux": "^3.3.1",
-    "react": "^0.14.0",
     "history": "^2.0.0"
   },
   "dependencies": {
