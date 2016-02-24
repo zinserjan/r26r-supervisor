@@ -18,7 +18,10 @@ export default function ({ history, routes, store, getLocals, initialState = {} 
   const useState = !isEmpty(initialState);
 
   const stopResolving = history.listenBefore((location, continueTransition) => {
-    if (!shouldFetch(oldLocation, location)) return;
+    if (!shouldFetch(oldLocation, location)) {
+      continueTransition();
+      return;
+    }
     oldLocation = location;
 
     match({ location, routes }, (error, redirectLocation, renderProps) => {
