@@ -15,38 +15,40 @@ const log = (e) => {
 export default function ({ history, routes, store, getLocals, initialState = {} }) {
   let oldLocation = null;
   let initialRender = true;
-  let useState = !isEmpty(initialState);
+  const useState = !isEmpty(initialState);
 
   const stopResolving = history.listenBefore((location, continueTransition) => {
     if (!shouldFetch(oldLocation, location)) return;
     oldLocation = location;
 
-    match({location, routes}, (error, redirectLocation, renderProps) => {
+    match({ location, routes }, (error, redirectLocation, renderProps) => {
       if (redirectLocation) {
         history.transitionTo(redirectLocation);
       } else if (renderProps) {
         const { components } = renderProps;
         const getAllLocals = createGetLocals(renderProps, store, getLocals);
 
-        // use initial state on first render when server rendered with state for the current location
-        const useInitialState = initialRender && useState && !shouldFetch(initialState.routing.location, location);
+        // use initial state on first render when server rendered with state for the current url
+        const useInitialState = initialRender && useState && !shouldFetch(initialState.routing.location, location); // eslint-disable-line max-len
 
         Promise
           .resolve()
           .then(() => {
             if (!useInitialState) {
-              return getDataDependencies(PREFETCH, components, getAllLocals)
+              return getDataDependencies(PREFETCH, components, getAllLocals);
             }
+            return Promise.resolve();
           })
           .then(() => {
             if (!useInitialState) {
               // call fetch but doesn't wait for it
               getDataDependencies(FETCH, components, getAllLocals)
-                .catch(log)
+                .catch(log);
             }
+            return Promise.resolve();
           })
           .then(continueTransition, continueTransition)
-          .catch(log)
+          .catch(log);
       } else {
         continueTransition();
       }

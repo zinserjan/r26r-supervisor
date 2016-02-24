@@ -25,8 +25,8 @@ export default function server({ store, routes, history, url, getLocals }, cb) {
           // Pick up current location from the history via synchronous history.listen
           history.listen((newLocation) => {
             const oldLocation = parsePath(url);
-            if (oldLocation.pathname !== newLocation.pathname || oldLocation.search !== newLocation.search) {
-              cb(null, newLocation, null, null); // location change while fetching -> redirect to new location
+            if (oldLocation.pathname !== newLocation.pathname || oldLocation.search !== newLocation.search) { // eslint-disable-line max-len
+              cb(null, newLocation, null, null); // location changed -> redirect to new location
             } else {
               const component = (
                 <Provider store={store}>
