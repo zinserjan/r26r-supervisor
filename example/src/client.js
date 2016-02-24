@@ -26,6 +26,7 @@ const url = window.location.pathname + window.location.search + window.location.
 
 renderClient({
   store,
+  initialState,
   routes: createRoutes(store),
   history,
   url
