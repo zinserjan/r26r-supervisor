@@ -9,7 +9,7 @@ import DevTools from './util/DevTools';
 import createRoutes from './routes/createRoutes';
 import * as reducers from './reducers';
 
-const initialData = window.__data;
+const initialState = window.__data;
 
 const history = useRouterHistory(createBrowserHistory)({
   //basename: '/test',
@@ -18,7 +18,7 @@ const history = useRouterHistory(createBrowserHistory)({
 const store = createStore({
   reducers,
   history,
-  initialData,
+  initialState,
   enhancers: [DevTools.instrument()],
 });
 
