@@ -1,10 +1,10 @@
 import { match } from 'react-router';
 import loadClientState from './fetch/loadClientState';
 
-export default function client({ store, initialState, routes, history, url, getLocals }, cb) {
-  match({ routes, history, location: url }, () => {
+export default function client({ store, initialState, routes, history, getLocals }, cb) {
+  match({ routes, history }, (error, redirectLocation, renderProps) => {
     loadClientState({ store, initialState, routes, history, getLocals });
 
-    cb();
+    cb(error, redirectLocation, renderProps);
   });
 }

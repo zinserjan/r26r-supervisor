@@ -11,7 +11,13 @@ export default function createRoutes() {
       <Route path="counter" component={Counter}/>
       <Route path="async" getComponent={function getComponent(location, cb) {
         require.ensure([], (require) => {
-          cb(null, require('../components/async/Async').default);
+          if (typeof window === "undefined") {
+            cb(null, require('../components/async/Async').default);
+          } else {
+            setTimeout(() => {
+              cb(null, require('../components/async/Async').default);
+            }, 1000);
+          }
         });
       }}
       />

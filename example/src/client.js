@@ -22,20 +22,18 @@ const {store, history} = configure({
   enhancers: [DevTools.instrument()],
 });
 
-const url = window.location.pathname + window.location.search + window.location.hash;
-
 const routes = createRoutes(store);
 
 renderClient({
   store,
   initialState,
   routes,
-  history,
-  url
-}, () => {
+  history
+}, (error, redirectLocation, renderProps) => {
+
   const component = (
     <Provider store={store}>
-      <Router routes={routes} history={history} />
+      <Router {...renderProps} />
     </Provider>
   );
 
