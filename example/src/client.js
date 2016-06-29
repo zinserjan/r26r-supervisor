@@ -13,10 +13,10 @@ import * as reducers from './reducers';
 
 const initialState = window.__data;
 
-const {store, history} = configure({
+const { store, history } = configure({
   reducers,
   history: useRouterHistory(createBrowserHistory)({
-    //basename: '/test',
+    // basename: '/test',
   }),
   initialState,
   enhancers: [DevTools.instrument()],
@@ -24,13 +24,22 @@ const {store, history} = configure({
 
 const routes = createRoutes(store);
 
+const beforeResolve = (renderProps) => {
+  console.log('beforeResolve', renderProps);
+};
+
+const afterResolve = (renderProps) => {
+  console.log('afterResolve', renderProps);
+};
+
 renderClient({
   store,
   initialState,
   routes,
-  history
+  history,
+  beforeResolve,
+  afterResolve,
 }, (error, redirectLocation, renderProps) => {
-
   const component = (
     <Provider store={store}>
       <Router {...renderProps} />
@@ -38,7 +47,7 @@ renderClient({
   );
 
   ReactDOM.render(component, document.getElementById('app'));
-  ReactDOM.render((<DevTools store={store}/>), document.getElementById('dev'));
+  ReactDOM.render((<DevTools store={store} />), document.getElementById('dev'));
 });
 
 

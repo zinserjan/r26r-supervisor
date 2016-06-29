@@ -2,7 +2,7 @@ import { match } from 'react-router';
 import loadClientState from './fetch/loadClientState';
 
 export default function client(props, cb) {
-  const { store, initialState, routes, history, getLocals } = props;
+  const { store, initialState, routes, history, getLocals, beforeResolve, afterResolve } = props;
   match({ routes, history }, (error, redirectLocation, renderProps) => {
     if (redirectLocation) {
       history.replace(redirectLocation);
@@ -16,6 +16,8 @@ export default function client(props, cb) {
         getLocals,
         redirectLocation,
         renderProps,
+        beforeResolve,
+        afterResolve,
       };
       loadClientState(data, (err) => {
         cb(err, redirectLocation, renderProps);
