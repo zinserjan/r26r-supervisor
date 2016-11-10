@@ -43,6 +43,12 @@ export default class App extends Component {
           <Link to="/counter">Go to Counter</Link>
         </div>
         <div>
+          <Link to="/counter-test">Go to Counter-Query via redirect</Link>
+        </div>
+        <div>
+          <Link to="/counter-query">Go to Counter-Query with onEnter hook to add query parameters</Link>
+        </div>
+        <div>
           <Link to="/async">Go to Async</Link>
         </div>
         <div>
